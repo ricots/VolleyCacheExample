@@ -1,5 +1,8 @@
 package com.example.sanakazi.volleycacheexample.activities;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -8,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.Cache;
@@ -38,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     public RecyclerView recyclerView;
     Button btnClearCache;
     StringRequest stringRequest;
+
     ArrayList<JsonResponse.Categories> categoryList;
     public static final String REGISTER_URL = "http://fitdev.cloudapp.net:8080/B2BAPIPlatform/GetCategoryGroup/v1?cityId=1";
     public static final String TAG = MainActivity.class.getSimpleName();
@@ -55,9 +60,7 @@ public class MainActivity extends AppCompatActivity {
         btnClearCache=(Button)findViewById(R.id.btnClearCache) ;
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
-      //  cacheRequest();
         volleyService();
-        //  recyclerView.setItemAnimator(new DefaultItemAnimator());
         btnClearCache.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,7 +71,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+
+
+
     public void volleyService() {
+
          stringRequest = new StringRequest(Request.Method.GET, REGISTER_URL,
                 new Response.Listener<String>() {
                     @Override
@@ -76,12 +84,14 @@ public class MainActivity extends AppCompatActivity {
                         Log.w(TAG, response.toString());
                         setData(response.toString());
 
+
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(MainActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+
                     }
                 }){
 
